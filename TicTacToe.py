@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+"""Implements a TicTacToe game simulator."""
+
+
 import numpy as np
 
 
@@ -54,6 +57,7 @@ class Game (object):
             raise RuntimeError("No more move to revert!")
         move = self.history.pop()
         self.board.itemset(move.position, 0)
+        self.nextColor *= -1
 
     def moves(self):
         """Return all the possible moves for this turn."""
