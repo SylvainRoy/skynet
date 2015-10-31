@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 from Game import Interactive_Player, Random_Player
-from TicTacToe import TicTacToe_Game, TicTacToe_Move, TicTacToe_Player
-from CrossFour import CrossFour_Game, CrossFour_Move, CrossFour_Player
+import TicTacToe
+import CrossFour
 
 
 def run_game(game, player1, player2):
@@ -16,10 +16,10 @@ def run_game(game, player1, player2):
 
 if __name__ == '__main__':
     # TicTacToe
-    #run_game(TicTacToe_Game(), TicTacToe_Player(), Interactive_Player())
-    #run_game(TicTacToe_Game(), Random_Player(), TicTacToe_Player())
+    run_game(TicTacToe.Game(), TicTacToe.Player(), Interactive_Player())
+    #run_game(TicTacToe.Game(), Random_Player(), TicTacToe.Player())
 
     # CrossFour
-    run_game(CrossFour_Game(), CrossFour_Player(), Interactive_Player())
-    #run_game(CrossFour_Game(), Random_Player(), CrossFour_Player())
-    #run_game(CrossFour_Game(), Random_Player(), Interactive_Player())
+    #run_game(CrossFour.Game(), CrossFour.Player(), Interactive_Player())
+    #run_game(CrossFour.Game(), Random_Player(), CrossFour.Player())
+    #run_game(CrossFour.Game(), Random_Player(), Interactive_Player())

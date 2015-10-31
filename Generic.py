@@ -4,7 +4,10 @@
 Some generic classes for Game, Move and Player.
 """
 
+
 import random
+
+
 
 class Game (object):
     """
@@ -27,10 +30,6 @@ class Game (object):
         """Return a string with a 'graphical' display of the board. """
         pass
 
-    def display(self):
-        """Print the board."""
-        print self.to_string(),
-
     def current_player(self):
         """Return the color (e.g. "white") of the current player."""
         pass
@@ -44,10 +43,18 @@ class Game (object):
         """
         pass
 
+    def display(self):
+        """Print the board."""
+        print self.to_string(),
+
     def pd(self, move):
+        """
+        Shorcut function to play and redisplay the board in one shot.
+        """
         r = self.play(move)
         self.display()
         return r
+
 
 
 class Move (object):

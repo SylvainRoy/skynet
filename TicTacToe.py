@@ -3,13 +3,13 @@
 """Implements a TicTacToe game simulator."""
 
 
-from Game import Game, Move, Player
+import Generic
 from Minimax import minimax
 import numpy as np
 
 
 
-class TicTacToe_Game (Game):
+class Game (Generic.Game):
     """
     The TicTacToe game.
     """
@@ -66,7 +66,7 @@ class TicTacToe_Game (Game):
         for x in xrange(xx):
             for y in xrange(yy):
                 if self.board.item(x, y) == 0:
-                    moves.append(TicTacToe_Move((x,y), self.nextColor))
+                    moves.append(Move((x,y), self.nextColor))
         return moves
 
     def to_string(self):
@@ -143,7 +143,7 @@ class TicTacToe_Game (Game):
         return None
 
 
-class TicTacToe_Move (Move):
+class Move (Generic.Move):
     """
     A move of the TicTacToe game.
     """
@@ -180,7 +180,7 @@ class TicTacToe_Move (Move):
 
 
 
-class TicTacToe_Player (Player):
+class Player (Generic.Player):
     """
     A TicTacToe player based on minimax.
     """

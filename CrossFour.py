@@ -3,13 +3,13 @@
 """Implements a Cross Four game simulator."""
 
 
-from Game import Game, Move, Player
+import Generic
 from Minimax import minimax
 import numpy as np
 
 
 
-class CrossFour_Game (Game):
+class Game (Generic.Game):
     """
     The Cross Four game.
     """
@@ -66,7 +66,7 @@ class CrossFour_Game (Game):
         """Return all the possible moves for this turn."""
         if self.status != "open":
             return []
-        return [CrossFour_Move(x, self.nextColor)
+        return [Move(x, self.nextColor)
                 for x in range(self.X)
                 if self.rows[x] < self.Y]
 
@@ -131,7 +131,8 @@ class CrossFour_Game (Game):
         return None
 
 
-class CrossFour_Move (Move):
+
+class Move (Generic.Move):
     """
     A move of the CrossFour game.
     """
@@ -168,7 +169,7 @@ class CrossFour_Move (Move):
 
 
 
-class CrossFour_Player (Player):
+class Player (Generic.Player):
     """
     A CrossFour player based on minimax.
     """
