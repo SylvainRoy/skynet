@@ -18,17 +18,17 @@ def minimax(game, player, alpha=-sys.maxint, beta=sys.maxint, turn='max', depth=
         print strokes
 
     if debug:
-        print "+" + ".."*depth + "MINIMAX-ab: " + player.color + "/" + turn + " (strokes:" + str(strokes) + ")"
-        print "+" + ".."*depth + game.to_string().replace("\n", "\n" + "+" + ".."*depth)
+        print "+{}MINIMAX: {}/{} (strokes:{})".format(".."*depth, player.color, turn, strokes)
+        print "+{}{}".format(".."*depth, game.to_string().replace("\n", "\n+"+".."*depth))
 
     # Get possible moves for current player
     moves = game.possible_moves()
 
-    # If we are at in terminal state or if the player decide to cut off
+    # If this is a terminal state or if the player decide to cut off
     if len(moves) == 0 or player.cutoff(game, depth):
         e = player.eval(game)
         if debug:
-            print "+" + ".."*depth + "=>val:{} for {}".format(e, ",".join([str(m) for m in path]))
+            print "+{}=>val:{} for {}".format(".."*depth, e, ",".join([str(m) for m in path]))
         return e, None, strokes
 
     # Max turn: Player tries to maximize the score when playing
@@ -48,7 +48,7 @@ def minimax(game, player, alpha=-sys.maxint, beta=sys.maxint, turn='max', depth=
                 break
             alpha = max(alpha, value)
         if debug:
-            print "+" + ".."*depth + "=> max:{} for {}".format(maxi, movemaxi)
+            print "+{}=> max:{} for {}".format(".."*depth, maxi, movemaxi)
         return maxi, movemaxi, strokes
 
     # Min turn: Opponent tries to minize the score when playing
@@ -68,5 +68,5 @@ def minimax(game, player, alpha=-sys.maxint, beta=sys.maxint, turn='max', depth=
                 break
             beta = min(beta, value)
         if debug:
-            print "+" + ".."*depth + "=> min:{} for {}".format(mini, movemini)
+            print "+{}=> min:{} for {}".format(".."*depth, mini, movemini)
         return mini, movemini, strokes

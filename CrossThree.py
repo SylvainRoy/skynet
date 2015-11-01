@@ -18,12 +18,13 @@ class Game (Generic.Game):
     The Cross Four game.
     """
 
-    def __init__(self, columns=5, rows=5):
+    def __init__(self, columns=4, rows=4):
         Generic.Game.__init__(self)
         self.X = columns
         self.Y = rows
         self._board = np.zeros(self.X*self.Y).reshape(self.X, self.Y)
         self._rows = [0]*self.X
+        self._status = -1
 
 
     def __str__(self):
@@ -36,11 +37,9 @@ class Game (Generic.Game):
         If the game is finished, return the end result in {'white', 'black', 'draw'}.
         None is return if the game is still open.
         """
-        if self.status != -1:
+        if self._status != -1:
             raise RuntimeError("This game is finished.")
         # Ensure that this is an acceptable move
-        if type(move) is int:
-            move = Move(move)
         if move.color is None:
             move.color = self.currentColor
         elif move.color != self.currentColor:
@@ -52,8 +51,8 @@ class Game (Generic.Game):
         self._rows[move.column] += 1
         self.history.append(move)
         self.currentColor = self.currentColor % 2 + 1
-        # Status has to be recomputed
-        return self._compute_status()
+        # Status will have to be recomputed
+        self._status = None
 
 
     def revert(self):
@@ -64,11 +63,11 @@ class Game (Generic.Game):
         self._rows[move.column] -= 1
         self._board.itemset((move.column, self._rows[move.column]), 0)
         self.currentColor = self.currentColor % 2 + 1
-        self.status = -1
+        self._status = -1
 
     def possible_moves(self):
         """Return all the possible moves for this turn."""
-        if self.status != -1:
+        if self.status() != -1:
             return []
         return [Move(x, self.currentColor)
                 for x in range(self.X)
@@ -88,43 +87,44 @@ class Game (Generic.Game):
             out += "|\n"
         out += "-"*self.X + "--\n"
         out += " " + "".join([str(i) for i in range(self.X)]) + "\n"
-        if self.status != -1:
-            out += "Status: " + str(self.status) + "\n"
+        if self.status() != -1:
+            out += "Status: " + str(self.status()) + "\n"
         return out
 
 
-    def _compute_status(self):
+    def status(self):
         """Return the winner of the game."""
+        # No need to recompute if no change
+        if self._status is not None:
+            return self._status
         # Look for a winner: three tokens with same color aligned
         b = self._board
         for color in [1, 2]:
-            for y in range(self.Y - 3):
-                for x in xrange(self.X - 3):
-                    if (b.item(x,y) == color and b.item(x+1,y) == color and b.item(x+2,y) == color and b.item(x+3,y) == color) or \
-                       (b.item(x,y) == color and b.item(x,y+1) == color and b.item(x,y+2) == color and b.item(x,y+3) == color) or \
-                       (b.item(x,y) == color and b.item(x+1,y+1) == color and b.item(x+2,y+2) == color and b.item(x+3,y+3) == color) or \
-                       (b.item(x+3,y) == color and b.item(x+2,y+1) == color and b.item(x+1,y+2) == color and b.item(x,y+3) == color):
-                        self.status = color
+            for y in range(self.Y - 2):
+                for x in xrange(self.X - 2):
+                    if (b.item(x,y) == color and b.item(x+1,y) == color and b.item(x+2,y) == color) or \
+                       (b.item(x,y) == color and b.item(x,y+1) == color and b.item(x,y+2) == color) or \
+                       (b.item(x,y) == color and b.item(x+1,y+1) == color and b.item(x+2,y+2) == color) or \
+                       (b.item(x+2,y) == color and b.item(x+1,y+1) == color and b.item(x,y+2) == color):
+                        self._status = color
                         return color
-            for y in range(self.Y - 3):
-                if (b.item(self.X-1,y) == color and b.item(self.X-1,y+1) == color and b.item(self.X-1,y+2) == color and b.item(self.X-1,y+3) == color) or \
-                   (b.item(self.X-2,y) == color and b.item(self.X-2,y+1) == color and b.item(self.X-2,y+2) == color and b.item(self.X-2,y+3) == color) or \
-                   (b.item(self.X-3,y) == color and b.item(self.X-3,y+1) == color and b.item(self.X-3,y+2) == color and b.item(self.X-3,y+3) == color):
-                    self.status = color
+            for y in range(self.Y - 2):
+                if (b.item(self.X-1,y) == color and b.item(self.X-1,y+1) == color and b.item(self.X-1,y+2) == color) or \
+                   (b.item(self.X-2,y) == color and b.item(self.X-2,y+1) == color and b.item(self.X-2,y+2) == color):
+                    self._status = color
                     return color
             for x in range(self.X - 2):
-                if (b.item(x,self.Y-1) == color and b.item(x+1,self.Y-1) == color and b.item(x+2,self.Y-1) == color and b.item(x+3,self.Y-1) == color) or \
-                   (b.item(x,self.X-2) == color and b.item(x+1,self.X-2) == color and b.item(x+2,self.X-2) == color and b.item(x+3,self.X-2) == color) or \
-                   (b.item(x,self.X-3) == color and b.item(x+1,self.X-3) == color and b.item(x+2,self.X-3) == color and b.item(x+3,self.X-3) == color):
-                    self.status = color
+                if (b.item(x,self.Y-1) == color and b.item(x+1,self.Y-1) == color and b.item(x+2,self.Y-1) == color) or \
+                   (b.item(x,self.X-2) == color and b.item(x+1,self.X-2) == color and b.item(x+2,self.X-2) == color):
+                    self._status = color
                     return color
         # Check if the game is complete
         if len(self.history) == self.X * self.Y:
-            self.status = 0
-            return self.status
+            self._status = 0
+            return self._status
         # Well, then the game is still open...
-        self.status = -1
-        return self.status
+        self._status = -1
+        return self._status
 
 
 
@@ -139,7 +139,7 @@ class Move (Generic.Move):
         self.column = column
 
     def __str__(self):
-        return "<{}:{}>".format(self.color, str(self.column))
+        return "<{}:{}>".format(self.colorAsChar(), str(self.column))
 
 
 
@@ -160,7 +160,7 @@ class Player (Generic.Minimax_Player):
         through the whole tree.
         """
         strokes = len(game.history)
-        status = game.status
+        status = game.status()
         if status == -1:
             raise RuntimeError("This evaluation is only for terminal states")
         elif status == self.color:
@@ -214,7 +214,7 @@ class AdvancedPlayer (Player):
         Evaluate the current state of the game.
         """
         strokes = len(game.history)
-        status = game.status
+        status = game.status()
         board = game._board
 
         # Player win
