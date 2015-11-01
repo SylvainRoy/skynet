@@ -21,6 +21,7 @@ class CrossFourTest(unittest.TestCase):
 
         # First "real life" example
         g = CrossFour.Game()
+        self.assertEqual(g.status, -1)
         g.play(1); g.play(0)
         self.assertEqual(g.status, -1)
         g.play(1); g.play(1)
@@ -92,6 +93,7 @@ class TicTacToeTest(unittest.TestCase):
 
         # First "real life" example
         g = TicTacToe.Game()
+        self.assertEqual(g.status, -1)
         g.play((0,0)); g.play((0,1))
         self.assertEqual(g.status, -1)
         g.play((1,1)); g.play((1,0))
