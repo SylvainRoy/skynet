@@ -112,7 +112,7 @@ class Game (Generic.Game):
                    (b.item(self.X-3,y) == color and b.item(self.X-3,y+1) == color and b.item(self.X-3,y+2) == color and b.item(self.X-3,y+3) == color):
                     self.status = color
                     return color
-            for x in range(self.X - 2):
+            for x in range(self.X - 3):
                 if (b.item(x,self.Y-1) == color and b.item(x+1,self.Y-1) == color and b.item(x+2,self.Y-1) == color and b.item(x+3,self.Y-1) == color) or \
                    (b.item(x,self.X-2) == color and b.item(x+1,self.X-2) == color and b.item(x+2,self.X-2) == color and b.item(x+3,self.X-2) == color) or \
                    (b.item(x,self.X-3) == color and b.item(x+1,self.X-3) == color and b.item(x+2,self.X-3) == color and b.item(x+3,self.X-3) == color):
