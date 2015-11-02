@@ -76,12 +76,13 @@ def run_game(player1, player2):
 if __name__ == '__main__':
     # TicTacToe
     #interactive_run_game(TicTacToe.Game(), TicTacToe.Player(), Interactive_Player())
-    interactive_run_game(TicTacToe.Game(), Random_Player(), TicTacToe.Player())
+    #interactive_run_game(TicTacToe.Game(), Random_Player(), TicTacToe.Player())
 
     # CrossFour
     #interactive_run_game(CrossFour.Game(), CrossFour.Player(), Interactive_Player())
     #interactive_run_game(CrossFour.Game(4, 4), Random_Player(), CrossFour.Player())
     #interactive_run_game(CrossFour.Game(), Random_Player(), Interactive_Player())
+    interactive_run_game(CrossFour.Game(5, 5), Interactive_Player(), CrossFour.Player())
 
     # Breeding a CrossFour player
     #print breed()
